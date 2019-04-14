@@ -1,45 +1,76 @@
-## Intro  
+# Module Dependencies  
 
-files in this project:  
+## !!! I highly recommend to create a new environment before installing these dependencies !!!   
 
-10 files: Rotating Proxy Crawler.ipynb,...,Rotating Proxy Crawler9.ipynb  
-
-1 file: Refactor.ipynb  
-
-1 file: break_ip_text_files_into_n_parts.ipynb  
-
-1 file: monsterScraper.ipynb  
-
-1 file: MonsterScraper_ForEveryState.ipynb  
-
-1 file: scrapeDataFromMonster.ipynb  
-
-2 files: HttpProxyList.txt, HttpsProxyList.txt  
-
-1 folder proxyLists:  
-
--> 2 files: filtered_http_proxys.txt,filtered_https_proxys.txt  
-
--> 10: files: http_proxys_part_0.txt,...,http_proxys_part_9.txt  
-
+datetime  
+pandas  
+numpy  
+math  
+time  
+re  
+bs4  
+random  
+requests   
+networkx
+itertools  
+matplotlib  
+nltk.corpus  
+fake_useragent  
+  
+# Intro  
+  
+The goal of this project is to scrape data from monster.com for up to 250 data science related job posts for every state.  
+  
+From each job post, the job title is stored, the state is stored, the data science skills that appear are marked as 1, and the data science skills that don't appear are marked as 0.  
+  
+To prevent the ip-address from getting blocked, alternate ip-addresses are obtained, filtered, and cycled for each connection.  
+  
+A set of randomly generated headers are generated and cycled between to further obfuscate the connection.    
+  
+# Process  
+  
+## Obtaining Good and Fast Ip Addresses  
+  
+### Open make_headers.ipynb:  
+  
+Run the file to make 100 headers that stores them in a text file called headers.txt in the Monster_scraper folder.  
+  
+### Open break_ip_text_files_onto_n_pats.ipynb:  
+  
+Go to https://www.proxy-list.download/HTTPS and https://www.proxy-list.download/HTTP and download their proxies from the page into the SetUpProxies folder, naming the files HttpsProxyList.txt and HttpProxyList.txt, respectively.  
+  
+Run the file and it will break the HttpProxyList.txt and HttpsProxyList.txt files into 3 parts each and store them in the folder called proxyLists.  
   
   
-## Process  
+### Open rotating_proxy_crawler_0, rotating_proxy_crawler_1, and rotating_proxy_crawler_2  
   
+Run these these files simutaneously.  
   
-Start with break_ip_text_files_onto_n_pats.ipynb:  
+They will test all of the proxy connections and delete all of the bad or slow-connecting proxies and add the filtered oned to the files filtered_http_proxys.txt and filtered_https_proxys.txt  
 
--> this file will break the HttpProxyList.txt and HttpsProxyList.txt files into 10 parts and store them in proxyLists  
+## Scraping Monster
 
-
-Open Rotating Proxy Crawler.ipynb,...,Proxy Crawler9.ipynb and run all the codes simultaneously:  
-
--> this file will delete all of the bad or slow-connecting proxies and append the filtered oned to the files filtered_http_proxys.txt and filtered_https_proxys.txt  
-
-Open MonsterScraper_forEveryState.ipynb:  
-
--> randomly select one of the filtered proxies for each job posting request  
+### Open MonsterScraper_forEveryState.ipynb:  
   
-  
--> MonsterScraper_forEveryState.ipynb will collect a dataframe of 1's and 0's for each skill listed in each job posting in each state, along with the job title  
+Run this file.
+
+The program will search the term 'Data Scientist' for a state on Monster.com and gather all of the job post links from up to the first 10 pages.
+
+Then The program will access each job post url, filter the text, and check if the words from the dictionary exist in the text.
+
+When finished, it will store the job title, the state, and the skills data in the final pandas dataframe in a file called scraped_data_(todays_date).txt in the MonsterScraper folder.
+
+## Analyzing the Data
+
+### Open Analysis.ipynb
+
+Run this file from top to bottom. 
+
+Read and run each of the cells and the file will show some histograms and network graphs for the data.
+
+The figures that are generated are saved in the figures folder.
+
+
+
+
 
